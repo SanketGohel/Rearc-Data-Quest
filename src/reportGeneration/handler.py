@@ -202,7 +202,8 @@ def handler(event, context):
     bestYearReport = getBestYearPerSeries(BLSData)
     print(bestYearReport)
 
-    #3. Get series_id + population report
+    #3. Get series_id + population report 
+    
     merged_report = getSeriesWithPopulation(BLSData, APIData, series_id='PRS30006032', period='Q01')
     print(merged_report)
 

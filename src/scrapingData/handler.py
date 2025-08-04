@@ -8,7 +8,6 @@ from datetime import datetime
 
 
 def blsData():
-
     s3 = boto3.client('s3')
     bucket_name = os.environ.get('BLSDATA_BUCKET_NAME')
     prefix = 'part1/'
@@ -51,6 +50,7 @@ def blsData():
             print(f"Failed to upload '{title}': {e}")
 
     # Step 4: Delete S3 files that are no longer present on the site
+
     object_to_keep = set()
     for title in current_title:
         object_to_keep.add(prefix + title)

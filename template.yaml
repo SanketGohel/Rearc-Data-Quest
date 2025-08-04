@@ -46,7 +46,7 @@ Resources:
       Description: !Sub
         - Stack ${AWS::StackName} Function ${ResourceName}
         - ResourceName: scrapingData
-      CodeUri: src/Function
+      CodeUri: src/scrapingData
       Handler: handler.handler
       Runtime: python3.13
       MemorySize: 3008
@@ -153,7 +153,7 @@ Resources:
       Description: !Sub
         - Stack ${AWS::StackName} Function ${ResourceName}
         - ResourceName: reportGeneration
-      CodeUri: src/Function2
+      CodeUri: src/reportGeneration
       Handler: handler.handler
       Role: !GetAtt ReportGenerationnRole.Arn
       Runtime: python3.9
