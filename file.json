@@ -1,0 +1,25 @@
+{
+    "Records": [
+        {
+            "messageId": "75c11030-174b-42e1-8045-9bfc6a98b8a2",
+            "receiptHandle": "AQEBkGblh0W/Wn8qHy2WZ/hCgm7fqXRxERHKr36xFfoqYAUAgJrFnNCVXRbt5mbb+RFWU6Z3M9r6Pv4EzON1Iw/uGOA/djw2oVulEcPOcrKZK82e367ZdggV3n9xqLTjxSARAGERy2TfHX/kaKqPLSqXKQHyROF0foM41vAvdBNfhOlzDAcra9J4dw6NHE0m5R1w5tHz3V6fNPbeeLT4Bjf6byOeugDvzubZ363fbkKD0NO1BARix1SosnJyr3ZGg0qCmsfrtpdlZxI8J0ezC4xL5aEllq7V6sx7kxbostKPwLkkX36vneLgLUc1ee2ssL4TkHsrpoGYDvLLlY7XuPWE/PC9xbHWCr3jKvhUBaKpEoV0qFOVKPMNYZFEWQkuowaORZqVw4aAcgwtnBBD4p6Ew3/n8OBmdpdMzRVeDwmeWZjGVYXtpJg8EgcyjR2/SzfC",
+            "body": "{"Records":[{"eventVersion":"2.1","eventSource":"aws:s3","awsRegion":"us-east-1","eventTime":"2025-08-03T23: 48: 08.913Z","eventName":"ObjectCreated:Put","userIdentity":{"principalId":"AWS:AROAUHPP4NLQTMTPSJZM5:rearc-data-quest-scrapingData-OnFxsW4FyerK"},"requestParameters":{"sourceIPAddress":"34.229.169.44"},"responseElements":{"x-amz-request-id":"JDG831NG4CFV581K","x-amz-id-2":"LHU/KNM000Vl8pQm/hi/Toq0b1mtKW/V7Ym9VUVnuDlwZjTGy3i5KQwVKrjjvPKS+rhRqCuNUyhsfm6iZ0Dzi0ptvEiYGE0I"},"s3":{"s3SchemaVersion":"1.0","configurationId":"ZmMxYTVjZWItNzIwNS00YzJiLWIyYTgtYWRiNGM5YzE1YzNj","bucket":{"name":"rearc-data-quest-blsdata-290950245089","ownerIdentity":{"principalId":"A1DOB5RBTCALU9"},"arn":"arn:aws:s3: : :rearc-data-quest-blsdata-290950245089"},"object":{"key":"part2/population_data_2025-08-03T23-48-08Z.json","size":1844,"eTag":"a96adf7ec9d6a7a82cd8b325b275c47e","sequencer":"00688FF538D1EAF37F"}}}]}",
+            "attributes": {
+                "ApproximateReceiveCount": "1",
+                "AWSTraceHeader": "Root=1-688ff536-7c7451eb5044e4d805b61ea1;Parent=a90f2a91feaab7be;Sampled=1;Lineage=1:16e9a11f:0",
+                "SentTimestamp": "1754264889880",
+                "SenderId": "AROA4R74ZO52XAB5OD7T4:S3-PROD-END",
+                "ApproximateFirstReceiveTimestamp": "1754264889890"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "dc555079c61655cb1c1815043d75018f",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:aws:sqs:us-east-1:290950245089:rearc-data-quest-DataAPINotification-CdkgAOmRLl0n",
+            "awsRegion": "us-east-1"
+        }
+    ]
+}
+
+Records[0]["body"]["Records"][0]["bucket"]["name"]
+Records[0]["body"]["Records"][0]["object"]["Key"]
+pd.readcsv(s3://bucket-name/key)

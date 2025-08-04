@@ -1,0 +1,197 @@
+Resources:
+  BLSData:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-blsdata-${AWS::AccountId}
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+              KMSMasterKeyID: alias/aws/s3
+      PublicAccessBlockConfiguration:
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      NotificationConfiguration:
+        QueueConfigurations:
+          - Event: s3:ObjectCreated:*
+            Queue: !GetAtt DataAPINotification.Arn
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: part2/
+    DependsOn:
+      - BLSDataToDataAPINotificationPermission
+      - DataAPINotification
+  BLSDataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref BLSData
+      PolicyDocument:
+        Id: RequireEncryptionInTransit
+        Version: '2012-10-17'
+        Statement:
+          - Principal: '*'
+            Action: '*'
+            Effect: Deny
+            Resource:
+              - !GetAtt BLSData.Arn
+              - !Sub ${BLSData.Arn}/*
+            Condition:
+              Bool:
+                aws:SecureTransport: 'false'
+  scrapingData:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: scrapingData
+      CodeUri: src/Function
+      Handler: handler.handler
+      Runtime: python3.13
+      MemorySize: 3008
+      Timeout: 900
+      Tracing: Active
+      Environment:
+        Variables:
+          BLSDATA_BUCKET_NAME: !Ref BLSData
+          BLSDATA_BUCKET_ARN: !GetAtt BLSData.Arn
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:GetObjectAcl
+                - s3:GetObjectLegalHold
+                - s3:GetObjectRetention
+                - s3:GetObjectTorrent
+                - s3:GetObjectVersion
+                - s3:GetObjectVersionAcl
+                - s3:GetObjectVersionForReplication
+                - s3:GetObjectVersionTorrent
+                - s3:ListBucket
+                - s3:ListBucketMultipartUploads
+                - s3:ListBucketVersions
+                - s3:ListMultipartUploadParts
+                - s3:AbortMultipartUpload
+                - s3:DeleteObject
+                - s3:DeleteObjectVersion
+                - s3:PutObject
+                - s3:PutObjectLegalHold
+                - s3:PutObjectRetention
+                - s3:RestoreObject
+              Resource:
+                - !Sub arn:${AWS::Partition}:s3:::${BLSData}
+                - !Sub arn:${AWS::Partition}:s3:::${BLSData}/*
+  scrapingDataLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${scrapingData}
+  DataAPINotification:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 345600
+  ReportGenerationnRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        # Attach managed policies by their ARNs
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: SQSReceiveMessagePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sqs:ReceiveMessage
+                  - sqs:DeleteMessage # Often needed for Lambda to process and remove messages
+                  - sqs:GetQueueAttributes # Often needed for Lambda to get queue details
+                Resource: !GetAtt DataAPINotification.Arn # Replace MySQSQueue with the logical ID of your SQS Queue resource
+        - PolicyName: S3BucketPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:GetObjectAcl
+                  - s3:GetObjectLegalHold
+                  - s3:GetObjectRetention
+                  - s3:GetObjectTorrent
+                  - s3:GetObjectVersion
+                  - s3:GetObjectVersionAcl
+                  - s3:GetObjectVersionForReplication
+                  - s3:GetObjectVersionTorrent
+                  - s3:ListBucket
+                  - s3:ListBucketMultipartUploads
+                  - s3:ListBucketVersions
+                  - s3:ListMultipartUploadParts
+                  - s3:AbortMultipartUpload
+                  - s3:DeleteObject
+                  - s3:DeleteObjectVersion
+                  - s3:PutObject
+                  - s3:PutObjectLegalHold
+                  - s3:PutObjectRetention
+                  - s3:RestoreObject
+                Resource:
+                  - !Sub arn:${AWS::Partition}:s3:::${BLSData}
+                  - !Sub arn:${AWS::Partition}:s3:::${BLSData}/*
+
+  reportGeneration:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: reportGeneration
+      CodeUri: src/Function2
+      Handler: handler.handler
+      Role: !GetAtt ReportGenerationnRole.Arn
+      Runtime: python3.9
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          BLSDATA_BUCKET_NAME: !Ref BLSData
+          BLSDATA_BUCKET_ARN: !GetAtt BLSData.Arn
+          SQS_QUEUE_URL: !Ref DataAPINotification # Example of passing SQS Queue URL to Lambda
+  reportGenerationLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${reportGeneration}
+
+  BLSDataToDataAPINotificationPermission:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: s3.amazonaws.com
+            Action: sqs:SendMessage
+            Resource: !GetAtt DataAPINotification.Arn
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !Sub arn:${AWS::Partition}:s3:::${AWS::StackName}-blsdata-${AWS::AccountId}
+      Queues:
+        - !Ref DataAPINotification
+  PopulationDataSourceMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt DataAPINotification.Arn
+      FunctionName: !GetAtt reportGeneration.Arn
+      BatchSize: 1
+      Enabled: true
+Transform: AWS::Serverless-2016-10-31
