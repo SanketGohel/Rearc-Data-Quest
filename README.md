@@ -13,6 +13,8 @@ This project implements a serverless architecture using AWS SAM with the followi
 - **EventBridge (CloudWatch Events)**: Provides event-driven scheduling and automation
 - **CloudWatch Logs**: Provides monitoring and debugging capabilities
 
+![Rearc Data Quest - Data Processing Pipeline](Design.png)
+
 ## EventBridge Integration
 
 ### Scheduled Events

@@ -32,10 +32,10 @@ Resources:
                 aws:SecureTransport: 'false'
           - Sid: AllowPublicRead
             Effect: Allow
-            Principal: "*"
-            Action: "s3:GetObject"
+            Principal: '*'
+            Action: s3:GetObject
             Resource:
-            - !Sub ${BLSData.Arn}/*
+              - !Sub ${BLSData.Arn}/*
   scrapingData:
     Type: AWS::Serverless::Function
     Properties:
