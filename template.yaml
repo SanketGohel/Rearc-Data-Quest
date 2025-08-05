@@ -6,11 +6,12 @@ Resources:
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
-              SSEAlgorithm: aws:kms
-              KMSMasterKeyID: alias/aws/s3
+              SSEAlgorithm: AES256
       PublicAccessBlockConfiguration:
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
   BLSDataBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -19,7 +20,8 @@ Resources:
         Id: RequireEncryptionInTransit
         Version: '2012-10-17'
         Statement:
-          - Principal: '*'
+          - Sid: RequireSSL
+            Principal: '*'
             Action: '*'
             Effect: Deny
             Resource:
@@ -28,6 +30,12 @@ Resources:
             Condition:
               Bool:
                 aws:SecureTransport: 'false'
+          - Sid: AllowPublicRead
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource:
+            - !Sub ${BLSData.Arn}/*
   scrapingData:
     Type: AWS::Serverless::Function
     Properties:
