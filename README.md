@@ -72,10 +72,10 @@ This project implements a serverless architecture using AWS SAM with the followi
 2. **Install dependencies**
    ```bash
    # For Function 1 (Data Scraping)
-   pip install -r src/Function/requirements.txt
+   pip install -r src/scrapingData/requirements.txt
    
    # For Function 2 (Report Generation)
-   pip install -r src/Function2/requirements.txt
+   pip install -r src/reportGeneration/requirements.txt
    ```
 
 3. **Deploy to AWS**
@@ -90,9 +90,8 @@ This project implements a serverless architecture using AWS SAM with the followi
 The project uses the following environment variables:
 
 - `BLSDATA_BUCKET_NAME`: S3 bucket name for data storage
-- `BLSDATA_BUCKET_ARN`: S3 bucket ARN
 - `DATA_API_NOTIFICATION_QUEUE_URL`: SQS queue URL for triggering report generation
-- `SQS_QUEUE_URL`: SQS queue URL for triggering report generation
+
 
 
 ### Manual Data Collection
