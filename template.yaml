@@ -84,6 +84,13 @@ Resources:
               Resource:
                 - !Sub arn:${AWS::Partition}:s3:::${BLSData}
                 - !Sub arn:${AWS::Partition}:s3:::${BLSData}/*
+      Events:
+        DailySchedule:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 day)
+            Description: Run scrapingData function daily
+            Enabled: true
   scrapingDataLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Retain
