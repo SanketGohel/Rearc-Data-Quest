@@ -7,7 +7,7 @@ import os
 from datetime import datetime, timezone
 
 
-def blsData():
+def get_bls_data():
     s3 = boto3.client('s3')
     bucket_name = os.environ.get('BLSDATA_BUCKET_NAME')
     bucket_prefix = 'part1/'
@@ -128,16 +128,16 @@ def blsData():
     print(f'Created {len(new_files)} new files, updated {len(updated_files)} files, and deleted {len(deleted_files)} files.')
 
         
-def populationData():
+def get_population_data():
 
-    # Setup
     s3 = boto3.client('s3')
     bucket_name = os.environ.get('BLSDATA_BUCKET_NAME')
-    s3_key_prefix = 'part2/'
+    bucket_prefix = 'part2/'
 
     url ='https://honolulu-api.datausa.io/tesseract/data.jsonrecords?cube=acs_yg_total_population_1&drilldowns=Year%2CNation&locale=en&measures=Population'
 
     try: 
+        # Step 1: Get data from the API
         response = requests.get(url)
         response.raise_for_status()
         json_data = response.json()
@@ -148,7 +148,7 @@ def populationData():
          # Step 3: Define file name (with timestamp)
         timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H-%M-%SZ')
         filename = f'population_data_{timestamp}.json'
-        s3_key = f'part2/{filename}' 
+        s3_key = bucket_prefix + filename
 
          # Step 4: Upload to S3
         s3.put_object(Bucket=bucket_name, Key=s3_key, Body=json_string)
@@ -159,6 +159,5 @@ def populationData():
     
 
 def handler(event, context):
-    # Log the event argument for debugging and for use in local development.
-    blsData()
-    populationData()
+    get_bls_data()
+    get_population_data()
