@@ -154,6 +154,16 @@ def get_population_data():
         s3.put_object(Bucket=bucket_name, Key=s3_key, Body=json_string)
         print(f'Uploaded to S3: {s3_key}')
 
+        # Step 5: Send message to SQS queue
+        sqs = boto3.client('sqs')
+        queue_url = os.environ.get('DATA_API_NOTIFICATION_QUEUE_URL')
+        message_body = {
+            'bucket_name': bucket_name,
+            's3_key': s3_key
+        }
+        sqs.send_message(QueueUrl=queue_url, MessageBody=json.dumps(message_body))
+        print(f'Sent message to SQS queue {queue_url} with body {message_body}')
+
     except Exception as e:
         print(f'Error: {e}')
     

@@ -55,8 +55,8 @@ def extract_s3_info_from_sqs_record(record):
     """
     try:
         body = json.loads(record['Records'][0]['body'])
-        bucket_name = body['Records'][0]['s3']['bucket']['name']
-        key_name = body['Records'][0]['s3']['object']['key']
+        bucket_name = body['bucket_name']
+        key_name = body['s3_key']
         return bucket_name, key_name
     except (KeyError, IndexError, json.JSONDecodeError) as e:
         print(f'Failed to extract bucket/key from SQS record: {e}')
@@ -118,8 +118,8 @@ def calculate_mean_and_std(dataframe, start_year = 2013, end_year = 2018):
         calculating_std_population  = filtered_df['Population'].std()
 
         return {
-            'mean': calculatingMeanPopultion,
-            'std_dev': calculatingSTDPopultion
+            'mean': calculating_mean_population,
+            'std_dev': calculating_std_population
         }
     except Exception as e:
         print(f'Error computing statistics: {e}')
@@ -171,6 +171,7 @@ def get_series_with_population(timeseries_df, population_df, series_id, period =
     
 
 def handler(event, context):
+    print(f'Processing event: {event}')
     bls_data = load_current_file(bucket_name)
     if bls_data is not None:
         # Column names and values have whitespace - so strip it first

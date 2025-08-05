@@ -11,18 +11,6 @@ Resources:
       PublicAccessBlockConfiguration:
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
-      NotificationConfiguration:
-        QueueConfigurations:
-          - Event: s3:ObjectCreated:*
-            Queue: !GetAtt DataAPINotification.Arn
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: part2/
-    DependsOn:
-      - BLSDataToDataAPINotificationPermission
-      - DataAPINotification
   BLSDataBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -56,6 +44,7 @@ Resources:
         Variables:
           BLSDATA_BUCKET_NAME: !Ref BLSData
           BLSDATA_BUCKET_ARN: !GetAtt BLSData.Arn
+          DATA_API_NOTIFICATION_QUEUE_URL: !GetAtt DataAPINotification.QueueUrl
       Policies:
         - AWSLambdaBasicExecutionRole
         - Statement:
@@ -84,6 +73,12 @@ Resources:
               Resource:
                 - !Sub arn:${AWS::Partition}:s3:::${BLSData}
                 - !Sub arn:${AWS::Partition}:s3:::${BLSData}/*
+        - Statement:
+            - Effect: Allow
+              Action:
+                - sqs:SendMessage
+                - sqs:GetQueueAttributes
+              Resource: !GetAtt DataAPINotification.Arn
       Events:
         DailySchedule:
           Type: Schedule
@@ -151,8 +146,8 @@ Resources:
                   - s3:PutObjectRetention
                   - s3:RestoreObject
                 Resource:
-                  - !Sub arn:${AWS::Partition}:s3:::${BLSData}
-                  - !Sub arn:${AWS::Partition}:s3:::${BLSData}/*
+                  - !GetAtt BLSData.Arn
+                  - !Sub ${BLSData.Arn}/*
 
   reportGeneration:
     Type: AWS::Serverless::Function
@@ -178,22 +173,6 @@ Resources:
     Properties:
       LogGroupName: !Sub /aws/lambda/${reportGeneration}
 
-  BLSDataToDataAPINotificationPermission:
-    Type: AWS::SQS::QueuePolicy
-    Properties:
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: s3.amazonaws.com
-            Action: sqs:SendMessage
-            Resource: !GetAtt DataAPINotification.Arn
-            Condition:
-              ArnEquals:
-                aws:SourceArn: !Sub arn:${AWS::Partition}:s3:::${AWS::StackName}-blsdata-${AWS::AccountId}
-      Queues:
-        - !Ref DataAPINotification
   PopulationDataSourceMapping:
     Type: AWS::Lambda::EventSourceMapping
     Properties:
