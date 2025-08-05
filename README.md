@@ -13,7 +13,7 @@ This project implements a serverless architecture using AWS SAM with the followi
 - **EventBridge (CloudWatch Events)**: Provides event-driven scheduling and automation
 - **CloudWatch Logs**: Provides monitoring and debugging capabilities
 
-![Rearc Data Quest - Data Processing Pipeline](Design.png)
+![Report Screenshot](Design.png)
 
 ## EventBridge Integration
 
@@ -32,7 +32,7 @@ This project implements a serverless architecture using AWS SAM with the followi
 - **Content**: Employment and labor statistics time series data
 - **Sample File from S3 Bucket**:https://rearc-data-quest-v3-blsdata-290950245089.s3.us-east-1.amazonaws.com/part1/pr.data.0.Current
 
-### Population Data (Part 2)
+### DataUSA API (Part 2)
 - **Source**: DataUSA API (Honolulu)
 - **Storage**: S3 bucket with prefix `part2/`
 - **Format**: JSON files with timestamps
