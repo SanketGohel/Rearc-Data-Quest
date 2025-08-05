@@ -1,0 +1,21 @@
+{
+    "Records": [
+      {
+        "messageId": "803af87d-0159-477f-a3a8-09c57e6c005e",
+        "receiptHandle": "AQEBTA1rIZT+R9wl7KAjripPMcu+ofxAb9CNlTmaFJ2PHUGlQf0WUFi34uFUhxY0TbJlCvTn8SigjaYiyEJtZEdhlUkv68c4xwam7UqIjeEAEIwGGfddAjGZM3xLZkUbPCPHxMi1tfI5BSuE4UqLXa+pAX2BflFAnd2Ccx+2mCQeRq8o7nuFCQbW43jgO5JCt+hXj2c8D67EfTsHEGDG9oGyxhXz2u3XoZbjmiVycGugB3MBAEPBjvzLoOsiZfIyPbUZd/OhOCMqRApnkzUYehw1o+pxJlxRXZqKIp2mTWh2PJH80D+SJvkHeYGRXu5RChFaB3M1KSW7+2d5sp43CRu0WQv8RBmxhbefCkmr1MHy5tGcvtbJQ7v6Ddtfi97Niu8e2VNM+mYlrW+ZT50Q2YQ41JVWPQcD9rnA4MfZrewFyRFTBPprEkoliH8U3DW/a7pp",
+        "body": "{\"bucket_name\": \"rearc-data-quest-v3-blsdata-290950245089\", \"s3_key\": \"part2/population_data_2025-08-05T18-24-08Z.json\"}",
+        "attributes": {
+          "ApproximateReceiveCount": "1",
+          "AWSTraceHeader": "Root=1-68924c43-191bfd7f52fe329c5e1fff49;Parent=a1c9acd73a6013d3;Sampled=1;Lineage=1:5ddeb0bd:0",
+          "SentTimestamp": "1754418248670",
+          "SenderId": "AROAUHPP4NLQTVYNTYJEK:rearc-data-quest-v3-scrapingData-qo4ynBo6eKzj",
+          "ApproximateFirstReceiveTimestamp": "1754418248682"
+        },
+        "messageAttributes": {},
+        "md5OfBody": "4da5526dce808974ece228dd835d7a91",
+        "eventSource": "aws:sqs",
+        "eventSourceARN": "arn:aws:sqs:us-east-1:290950245089:rearc-data-quest-v3-DataAPINotification-FfwRTlWs1BzC",
+        "awsRegion": "us-east-1"
+      }
+    ]
+  }

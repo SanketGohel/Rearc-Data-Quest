@@ -1,0 +1,217 @@
+timestamp,message
+1754418249603,"INIT_START Runtime Version: python:3.9.v101	Runtime Version ARN: arn:aws:lambda:us-east-1::runtime:af29e10439856e364100c5dec1ce9c55d44feb2772258f7a7e480a95474aa18f
+"
+1754418252422,"START RequestId: b12f127d-5fa4-5a90-8fd8-7371112438fb Version: $LATEST
+"
+1754418252423,"Processing event: {'Records': [{'messageId': '803af87d-0159-477f-a3a8-09c57e6c005e', 'receiptHandle': 'AQEBTA1rIZT+R9wl7KAjripPMcu+ofxAb9CNlTmaFJ2PHUGlQf0WUFi34uFUhxY0TbJlCvTn8SigjaYiyEJtZEdhlUkv68c4xwam7UqIjeEAEIwGGfddAjGZM3xLZkUbPCPHxMi1tfI5BSuE4UqLXa+pAX2BflFAnd2Ccx+2mCQeRq8o7nuFCQbW43jgO5JCt+hXj2c8D67EfTsHEGDG9oGyxhXz2u3XoZbjmiVycGugB3MBAEPBjvzLoOsiZfIyPbUZd/OhOCMqRApnkzUYehw1o+pxJlxRXZqKIp2mTWh2PJH80D+SJvkHeYGRXu5RChFaB3M1KSW7+2d5sp43CRu0WQv8RBmxhbefDkmr1MHy5tGcvtbJQ7v6Ddtfi97Niu8e2VNM+mYlrW+ZT50Q2YQ41JVWPQcD9rnA4MfZrewFyRFTBPprEkoliH8U3DW/a7pp', 'body': '{""bucket_name"": ""rearc-data-quest-v3-blsdata-290950245089"", ""s3_key"": ""part2/population_data_2025-08-05T18-24-08Z.json""}', 'attributes': {'ApproximateReceiveCount': '1', 'AWSTraceHeader': 'Root=1-68924c43-191bfd7f52fe329c5e1fff49;Parent=a1c9acd73a6013d3;Sampled=1;Lineage=1:5ddeb0bd:0', 'SentTimestamp': '1754418248670', 'SenderId': 'AROAUHPP4NLQTVYNTYJEK:rearc-data-quest-v3-scrapingData-qo4ynBo6eKzj', 'ApproximateFirstReceiveTimestamp': '1754418248682'}, 'messageAttributes': {}, 'md5OfBody': '4da5526dce808974ece228dd835d7a91', 'eventSource': 'aws:sqs', 'eventSourceARN': 'arn:aws:sqs:us-east-1:290950245089:rearc-data-quest-v3-DataAPINotification-FfwRTlWs1BzC', 'awsRegion': 'us-east-1'}]}
+"
+1754418252491,"Found .Current file: part1/pr.data.0.Current
+"
+1754418252628,"Loaded part1/pr.data.0.Current from S3 with shape (37002, 5)
+"
+1754418252688,"Loaded DataFrame from part2/population_data_2025-08-05T18-24-08Z.json with shape (10, 4)
+"
+1754418252694,"Mean: 322069808.00, Std Dev: 4158441.04
+"
+1754418252737,"series_id  best_year  max_value
+"
+1754418252737,"0    PRS30006011       2022     20.500
+"
+1754418252737,"1    PRS30006012       2022     17.100
+"
+1754418252737,"2    PRS30006013       1998    705.895
+"
+1754418252737,"3    PRS30006021       2010     17.700
+"
+1754418252737,"4    PRS30006022       2010     12.400
+"
+1754418252737,"..           ...        ...        ...
+"
+1754418252737,"277  PRS88003192       2002    282.800
+"
+1754418252737,"278  PRS88003193       2024    860.838
+"
+1754418252737,"279  PRS88003201       2022     37.200
+"
+1754418252737,"280  PRS88003202       2022     28.700
+"
+1754418252737,"281  PRS88003203       2024    583.441
+"
+1754418252737,"[282 rows x 3 columns]
+"
+1754418252779,"series_id  year period  value   Population
+"
+1754418252779,"0   PRS30006032  1995    Q01    0.0          NaN
+"
+1754418252779,"1   PRS30006032  1996    Q01   -4.2          NaN
+"
+1754418252779,"2   PRS30006032  1997    Q01    2.8          NaN
+"
+1754418252779,"3   PRS30006032  1998    Q01    0.9          NaN
+"
+1754418252779,"4   PRS30006032  1999    Q01   -4.1          NaN
+"
+1754418252779,"5   PRS30006032  2000    Q01    0.5          NaN
+"
+1754418252779,"6   PRS30006032  2001    Q01   -6.3          NaN
+"
+1754418252779,"7   PRS30006032  2002    Q01   -6.6          NaN
+"
+1754418252779,"8   PRS30006032  2003    Q01   -5.7          NaN
+"
+1754418252779,"9   PRS30006032  2004    Q01    2.0          NaN
+"
+1754418252779,"10  PRS30006032  2005    Q01   -0.5          NaN
+"
+1754418252779,"11  PRS30006032  2006    Q01    1.8          NaN
+"
+1754418252779,"12  PRS30006032  2007    Q01   -0.8          NaN
+"
+1754418252779,"13  PRS30006032  2008    Q01   -3.5          NaN
+"
+1754418252779,"14  PRS30006032  2009    Q01  -21.0          NaN
+"
+1754418252779,"15  PRS30006032  2010    Q01    3.2          NaN
+"
+1754418252779,"16  PRS30006032  2011    Q01    1.5          NaN
+"
+1754418252779,"17  PRS30006032  2012    Q01    2.5          NaN
+"
+1754418252779,"18  PRS30006032  2013    Q01    0.5  316128839.0
+"
+1754418252779,"19  PRS30006032  2014    Q01   -0.1  318857056.0
+"
+1754418252779,"20  PRS30006032  2015    Q01   -1.7  321418821.0
+"
+1754418252779,"21  PRS30006032  2016    Q01   -1.4  323127515.0
+"
+1754418252779,"22  PRS30006032  2017    Q01    0.9  325719178.0
+"
+1754418252779,"23  PRS30006032  2018    Q01    0.5  327167439.0
+"
+1754418252779,"24  PRS30006032  2019    Q01   -1.6  328239523.0
+"
+1754418252779,"25  PRS30006032  2020    Q01   -7.0          NaN
+"
+1754418252779,"26  PRS30006032  2021    Q01    0.7  331893745.0
+"
+1754418252779,"27  PRS30006032  2022    Q01    5.3  333287562.0
+"
+1754418252779,"28  PRS30006032  2023    Q01    0.3  334914896.0
+"
+1754418252779,"29  PRS30006032  2024    Q01   -0.7          NaN
+"
+1754418252779,"30  PRS30006032  2025    Q01    0.4          NaN
+"
+1754418252781,"END RequestId: b12f127d-5fa4-5a90-8fd8-7371112438fb
+"
+1754418252781,"REPORT RequestId: b12f127d-5fa4-5a90-8fd8-7371112438fb	Duration: 358.51 ms	Billed Duration: 359 ms	Memory Size: 3008 MB	Max Memory Used: 162 MB	Init Duration: 2815.77 ms	
+XRAY TraceId: 1-68924c48-4e16c394a5decb2639905b06	SegmentId: bbf594e73f015915	Sampled: true	
+"
+1754418271032,"START RequestId: c27ee745-f0f8-56c5-8a7e-8649be66d4ae Version: $LATEST
+"
+1754418271032,"Processing event: {'Records': [{'messageId': '0874863b-6569-46c7-bda7-ed0d6d2c2af0', 'receiptHandle': 'AQEBmhx/W08llRm4iD0zJn2UsY2/bJQoyDjpCTwD/kFqI7gkFNACrrRdf1XYcxczOapioKW+u154PrTdEMWoUKL7D0wxxmIgEyvIjSbQkj9wjmm7QYTQQMCfHa2OZ5FH1a8KUdK9BbRShqEZSI0Xh9eHGKpGZrKoWZBWQkeiLGkhZ5XawZ8fe+CazFX3nKou9XSeODqf5Pii+xbpKTYafVoNurkVJ6S4wCv2s8HUKxa+5ov8O6MBOb9KEv2AzrRGwK5Cf3onUbDyCvwuti5NSPHUozT2zs0aDIJVQWs4eMqwIDV4nFEi3T96PXxOhXCaIwk9zGSXpdjXoRSaNOM8vxhFG6owbKCnBjculng0iU9hD1Z3KxqxqItFwiWYK20eWkpPmMFtxNeCIgj+5cIOXwtn2IMqXZbv+QT75N9KgjTO4rXT4NCDMCJ0Q6l72EYTEzqg', 'body': '{""bucket_name"": ""rearc-data-quest-v3-blsdata-290950245089"", ""s3_key"": ""part2/population_data_2025-08-05T18-24-30Z.json""}', 'attributes': {'ApproximateReceiveCount': '1', 'AWSTraceHeader': 'Root=1-68924c5e-3b51602b3c0fe17943431de0;Parent=0e455acf19b3aaa3;Sampled=1;Lineage=1:5ddeb0bd:0', 'SentTimestamp': '1754418271001', 'SenderId': 'AROAUHPP4NLQTVYNTYJEK:rearc-data-quest-v3-scrapingData-qo4ynBo6eKzj', 'ApproximateFirstReceiveTimestamp': '1754418271006'}, 'messageAttributes': {}, 'md5OfBody': 'c5ff9505074357c21fb69415c0f5fd60', 'eventSource': 'aws:sqs', 'eventSourceARN': 'arn:aws:sqs:us-east-1:290950245089:rearc-data-quest-v3-DataAPINotification-FfwRTlWs1BzC', 'awsRegion': 'us-east-1'}]}
+"
+1754418271082,"Found .Current file: part1/pr.data.0.Current
+"
+1754418271154,"Loaded part1/pr.data.0.Current from S3 with shape (37002, 5)
+"
+1754418271198,"Loaded DataFrame from part2/population_data_2025-08-05T18-24-30Z.json with shape (10, 4)
+"
+1754418271200,"Mean: 322069808.00, Std Dev: 4158441.04
+"
+1754418271225,"series_id  best_year  max_value
+"
+1754418271225,"0    PRS30006011       2022     20.500
+"
+1754418271225,"1    PRS30006012       2022     17.100
+"
+1754418271225,"2    PRS30006013       1998    705.895
+"
+1754418271225,"3    PRS30006021       2010     17.700
+"
+1754418271225,"4    PRS30006022       2010     12.400
+"
+1754418271225,"..           ...        ...        ...
+"
+1754418271225,"277  PRS88003192       2002    282.800
+"
+1754418271225,"278  PRS88003193       2024    860.838
+"
+1754418271225,"279  PRS88003201       2022     37.200
+"
+1754418271225,"280  PRS88003202       2022     28.700
+"
+1754418271225,"281  PRS88003203       2024    583.441
+"
+1754418271225,"[282 rows x 3 columns]
+"
+1754418271259,"series_id  year period  value   Population
+"
+1754418271259,"0   PRS30006032  1995    Q01    0.0          NaN
+"
+1754418271259,"1   PRS30006032  1996    Q01   -4.2          NaN
+"
+1754418271259,"2   PRS30006032  1997    Q01    2.8          NaN
+"
+1754418271259,"3   PRS30006032  1998    Q01    0.9          NaN
+"
+1754418271259,"4   PRS30006032  1999    Q01   -4.1          NaN
+"
+1754418271259,"5   PRS30006032  2000    Q01    0.5          NaN
+"
+1754418271259,"6   PRS30006032  2001    Q01   -6.3          NaN
+"
+1754418271259,"7   PRS30006032  2002    Q01   -6.6          NaN
+"
+1754418271259,"8   PRS30006032  2003    Q01   -5.7          NaN
+"
+1754418271259,"9   PRS30006032  2004    Q01    2.0          NaN
+"
+1754418271259,"10  PRS30006032  2005    Q01   -0.5          NaN
+"
+1754418271259,"11  PRS30006032  2006    Q01    1.8          NaN
+"
+1754418271259,"12  PRS30006032  2007    Q01   -0.8          NaN
+"
+1754418271259,"13  PRS30006032  2008    Q01   -3.5          NaN
+"
+1754418271259,"14  PRS30006032  2009    Q01  -21.0          NaN
+"
+1754418271259,"15  PRS30006032  2010    Q01    3.2          NaN
+"
+1754418271259,"16  PRS30006032  2011    Q01    1.5          NaN
+"
+1754418271259,"17  PRS30006032  2012    Q01    2.5          NaN
+"
+1754418271259,"18  PRS30006032  2013    Q01    0.5  316128839.0
+"
+1754418271259,"19  PRS30006032  2014    Q01   -0.1  318857056.0
+"
+1754418271259,"20  PRS30006032  2015    Q01   -1.7  321418821.0
+"
+1754418271259,"21  PRS30006032  2016    Q01   -1.4  323127515.0
+"
+1754418271259,"22  PRS30006032  2017    Q01    0.9  325719178.0
+"
+1754418271259,"23  PRS30006032  2018    Q01    0.5  327167439.0
+"
+1754418271259,"24  PRS30006032  2019    Q01   -1.6  328239523.0
+"
+1754418271259,"25  PRS30006032  2020    Q01   -7.0          NaN
+"
+1754418271259,"26  PRS30006032  2021    Q01    0.7  331893745.0
+"
+1754418271259,"27  PRS30006032  2022    Q01    5.3  333287562.0
+"
+1754418271259,"28  PRS30006032  2023    Q01    0.3  334914896.0
+"
+1754418271259,"29  PRS30006032  2024    Q01   -0.7          NaN
+"
+1754418271259,"30  PRS30006032  2025    Q01    0.4          NaN
+"
+1754418271261,"END RequestId: c27ee745-f0f8-56c5-8a7e-8649be66d4ae
+"
+1754418271261,"REPORT RequestId: c27ee745-f0f8-56c5-8a7e-8649be66d4ae	Duration: 228.73 ms	Billed Duration: 229 ms	Memory Size: 3008 MB	Max Memory Used: 174 MB	
+XRAY TraceId: 1-68924c5f-b8de0a4f3e6e37c9da4c2b69	SegmentId: 6108bf8ff1013dca	Sampled: true	
+"

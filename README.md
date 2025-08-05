@@ -1,52 +1,65 @@
-# Rearc Data Quest - BLS Data Processing Pipeline
+# Rearc Data Quest - Data Processing Pipeline
 
-A serverless data processing pipeline built with AWS SAM that scrapes Bureau of Labor Statistics (BLS) data and population data, then generates analytical reports.
+A serverless data processing pipeline built with AWS SAM that scrapes Bureau of Labor Statistics (BLS) data and DataUSA API data, then generates analytical reports.
 
-## 🏗️ Architecture
+## Architecture
 
 This project implements a serverless architecture using AWS SAM with the following components:
 
-- **S3 Bucket**: Stores scraped BLS data and population data
-- **Lambda Function 1 (scrapingData)**: Scrapes BLS data and population data from external APIs
+- **S3 Bucket**: Stores scraped BLS data and DataUSA API data
+- **Lambda Function 1 (scrapingData)**: Scrapes BLS data and DataUSA API data from external APIs
 - **Lambda Function 2 (reportGeneration)**: Processes data and generates analytical reports
 - **SQS Queue**: Triggers report generation when new data is uploaded
+- **EventBridge (CloudWatch Events)**: Provides event-driven scheduling and automation
 - **CloudWatch Logs**: Provides monitoring and debugging capabilities
 
-## 📊 Data Sources
+## EventBridge Integration
+
+### Scheduled Events
+- **Daily Data Scraping**: Automatically triggers `scrapingData` function every day
+
+### Event-Driven Triggers
+- **S3 Object Creation**: Automatically triggers `reportGeneration` when new population data is uploaded to S3
+
+## Data Sources
 
 ### BLS Data (Part 1)
 - **Source**: https://download.bls.gov/pub/time.series/pr/
 - **Storage**: S3 bucket with prefix `part1/`
 - **Format**: Tab-delimited files with `.Current` extension
 - **Content**: Employment and labor statistics time series data
+- **Sample File from S3 Bucket**:https://rearc-data-quest-v3-blsdata-290950245089.s3.us-east-1.amazonaws.com/part1/pr.data.0.Current
 
 ### Population Data (Part 2)
 - **Source**: DataUSA API (Honolulu)
 - **Storage**: S3 bucket with prefix `part2/`
 - **Format**: JSON files with timestamps
 - **Content**: US population data by year
+- **Sample File from S3 Bucket**:https://rearc-data-quest-v3-blsdata-290950245089.s3.us-east-1.amazonaws.com/part2/population_data_2025-08-05T18-24-30Z.json
 
-## 🚀 Features
+## Features
 
 ### Data Collection
 - **Automated Scraping**: Fetches current BLS data files and compares with existing S3 objects
 - **Incremental Updates**: Only downloads new or changed files
 - **Cleanup**: Removes obsolete files from S3
 - **Population Data**: Fetches current population statistics from DataUSA API
+- **Event-Driven Scheduling**: Uses EventBridge for reliable daily execution
 
 ### Data Analysis
 - **Statistical Analysis**: Calculates mean and standard deviation of US population (2013-2018)
 - **Time Series Analysis**: Identifies best performing years for each data series
 - **Data Integration**: Merges BLS time series data with population data
 - **Data Cleaning**: Strips whitespace and normalizes data types
+- **Real-time Processing**: Immediate analysis when new data is available
 
-## 🛠️ Prerequisites
+## Prerequisites
 
 - AWS CLI configured with appropriate permissions
 - Python 3.9+ (for local development)
 - AWS SAM CLI
 
-## 📦 Installation
+## Installation
 
 1. **Clone the repository**
    ```bash
@@ -69,15 +82,16 @@ This project implements a serverless architecture using AWS SAM with the followi
    sam deploy --guided
    ```
 
-## 🔧 Configuration
+
+## Configuration
 
 The project uses the following environment variables:
 
 - `BLSDATA_BUCKET_NAME`: S3 bucket name for data storage
 - `BLSDATA_BUCKET_ARN`: S3 bucket ARN
+- `DATA_API_NOTIFICATION_QUEUE_URL`: SQS queue URL for triggering report generation
 - `SQS_QUEUE_URL`: SQS queue URL for triggering report generation
 
-## 📈 Usage
 
 ### Manual Data Collection
 The `scrapingData` function can be invoked manually to collect data:
@@ -88,6 +102,7 @@ aws lambda invoke --function-name scrapingData response.json
 
 ### Automatic Report Generation
 Reports are automatically generated when new population data is uploaded to S3 (triggered via SQS).
+
 
 ### Generated Reports
 
@@ -103,36 +118,28 @@ Reports are automatically generated when new population data is uploaded to S3 (
    - Merges BLS time series data with population data
    - Filters by specific series_id and period (default: PRS30006032, Q01)
 
-## 🔍 Monitoring
+## Monitoring
 
 - **CloudWatch Logs**: Each Lambda function has dedicated log groups
 - **S3 Notifications**: Automatic triggering of report generation
 - **Error Handling**: Comprehensive error logging and exception handling
+- **Scheduled Execution**: Daily automated data collection
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 RearcProject/
 ├── template.yaml          # SAM template with AWS resources
 ├── samconfig.toml        # SAM deployment configuration
 ├── src/
-│   ├── Function/         # Data scraping Lambda
+│   ├── srapingData/         # Data scraping Lambda
 │   │   ├── handler.py    # Main scraping logic
 │   │   └── requirements.txt
-│   └── Function2/        # Report generation Lambda
+│   └── reportGeneration/   # Report generation Lambda
 │       ├── handler.py    # Data analysis and reporting
 │       └── requirements.txt
 └── README.md
 ```
-
-## 🔐 Security
-
-- **S3 Encryption**: Server-side encryption with AWS KMS
-- **IAM Roles**: Least privilege access for Lambda functions
-- **Public Access**: S3 bucket blocks public access
-- **Transport Security**: Enforces HTTPS for S3 operations
-
-## 🧪 Testing
 
 ### Local Testing
 ```bash
@@ -149,56 +156,14 @@ sam local invoke reportGeneration --event events/report-event.json
 3. Verify S3 objects are created
 4. Check that report generation is triggered automatically
 
-## 📝 API Endpoints
 
 ### Data Sources
 - **BLS Data**: https://download.bls.gov/pub/time.series/pr/
 - **Population Data**: https://honolulu-api.datausa.io/tesseract/data.jsonrecords
 
-### Headers
-- User-Agent: EmploymentDataFetcher/1.0 (sanketgohelt1992@gmail.com)
-- Content-Type: text/html
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-1. **S3 Access Denied**
-   - Verify IAM roles have appropriate S3 permissions
-   - Check bucket policy and encryption settings
-
-2. **Lambda Timeout**
-   - Increase timeout in template.yaml (currently 900s for scraping, 30s for reports)
-   - Monitor memory usage and adjust if needed
-
-3. **SQS Message Processing**
-   - Check CloudWatch logs for Lambda execution errors
-   - Verify SQS queue permissions
-
 ### Debugging
-
-- Enable X-Ray tracing for detailed request tracking
 - Check CloudWatch logs for each Lambda function
-- Monitor S3 bucket for file uploads and deletions
 
-## 📄 License
-
-This project is part of the Rearc Data Quest challenge.
-
-## 👥 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📞 Support
-
-For issues and questions, please contact: sanketgohelt1992@gmail.com
-
----
-
-**Stack Name**: rearc-data-quest  
-**Region**: us-east-1  
-**Deployment**: AWS SAM 
+## Output Files
+- **CloudWatch_logs.csv**: Contains final outputs for three specific questions, based on pre-processed data
+- **Report_Generation.ipynb**: Jupyter notebook with detailed analysis functions and data processing logic
