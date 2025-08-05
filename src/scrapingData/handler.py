@@ -30,9 +30,11 @@ def get_bls_data():
     date_matched = False
     time_matched = False
     am_pm_matched = False
-    date_pattern = r'\d{1,2}/\d{1,2}/\d{4}'
-    time_pattern = r'\d{1,2}:\d{2}'
-    am_pm_pattern = r'AM|PM'
+
+    # Define regex patterns to extract date, time, and AM/PM from HTML content
+    date_pattern = r'\d{1,2}/\d{1,2}/\d{4}' # Matches MM/DD/YYYY format
+    time_pattern = r'\d{1,2}:\d{2}' # Matches HH:MM format
+    am_pm_pattern = r'AM|PM' # Matches AM or PM
     for child in pre_tag.children:
         if child.name == 'br':
             continue
